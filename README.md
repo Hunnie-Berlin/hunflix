@@ -1,2 +1,2 @@
-# hunflix
- Learning React and ES6 by building a Movie Discovery App.
+# Hunflix
+: Learning React and ES6 by building a Movie Discovery App.
