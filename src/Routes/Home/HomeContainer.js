@@ -22,7 +22,6 @@ class HomeContainer extends React.Component {
       const {
         data: { results: popular },
       } = await moviesApi.popular();
-      console.log(nowPlaying, upComing, popular);
       this.setState({
         nowPlaying,
         upComing,
@@ -41,7 +40,6 @@ class HomeContainer extends React.Component {
 
   render() {
     const { nowPlaying, upComing, popular, error, loading } = this.state;
-    console.log(this.state);
     return (
       <HomePresenter
         nowPlaying={nowPlaying}
