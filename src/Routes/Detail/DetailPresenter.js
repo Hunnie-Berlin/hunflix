@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-
+import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
 import noPosterUrl from "../../assets/noPosterSmall.png";
 import noBackdropUrl from "../../assets/noBackdropBig.jpg";
@@ -87,9 +87,25 @@ const Cover = styled.div`
 
 const DetailPresenter = ({ result, error, loading }) =>
   loading ? (
-    <Loader />
+    <>
+      <Helmet>
+        <title>Loading | Hunflix</title>
+      </Helmet>
+      <Loader />
+    </>
   ) : (
     <Container>
+      <Helmet>
+        <title>
+          {" "}
+          {result.original_title
+            ? result.original_title
+            : result.original_name
+            ? result.original_name
+            : "Detail"}{" "}
+          | Hunflix
+        </title>
+      </Helmet>
       <Backdrop
         bgImage={
           result.backdrop_path
