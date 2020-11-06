@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import Loader from "../../Components/Loader";
+import useWindowDimensions from "../../Components/useWindowDemensions";
 import noPosterUrl from "../../assets/noPosterSmall.png";
 import noBackdropUrl from "../../assets/noBackdropBig.jpg";
 
@@ -33,7 +34,7 @@ const Content = styled.div`
 `;
 
 const Data = styled.div`
-  width: 70%;
+  width: ${(props) => props.width};
   margin-left: 30px;
 `;
 
@@ -46,6 +47,8 @@ const Title = styled.h3`
 const Item = styled.span``;
 
 const ItemConatainer = styled.div`
+  width: 80%;
+  line-height: 1.75em;
   margin: 16px 0;
 `;
 
@@ -76,8 +79,8 @@ const Overview = styled.p`
 `;
 
 const Cover = styled.div`
-  width: 30%;
-  height: 100%;
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
   background-image: url(${(props) => props.bgImage});
   background-position: center center;
   background-size: cover;
@@ -85,8 +88,19 @@ const Cover = styled.div`
   box-shadow: 3px 3px 36px rgba(200, 200, 200, 0.3);
 `;
 
-const DetailPresenter = ({ result, error, loading }) =>
-  loading ? (
+const DetailPresenter = ({ result, error, loading }) => {
+  const { height, width, screenHeight, screenWidth } = useWindowDimensions();
+  console.log(
+    "height",
+    height,
+    "width",
+    width,
+    "screenHeight",
+    screenHeight,
+    "screenWidth",
+    screenWidth
+  );
+  return loading ? (
     <>
       <Helmet>
         <title>Loading | Hunflix</title>
@@ -115,13 +129,23 @@ const DetailPresenter = ({ result, error, loading }) =>
       />
       <Content>
         <Cover
+          height={
+            screenWidth > screenHeight
+              ? `${530 * (width / screenWidth)}px`
+              : `${height * 0.26}px`
+          }
+          width={
+            screenWidth > screenHeight
+              ? `${380 * (width / screenWidth)}px`
+              : `${height * 0.19}px`
+          }
           bgImage={
             result.poster_path
               ? `https://image.tmdb.org/t/p/original${result.poster_path}`
               : noPosterUrl
           }
         />
-        <Data>
+        <Data width={`${(width / screenWidth) * 70}%}`}>
           <Title>{result.original_title || result.original_name}</Title>
           <ItemConatainer>
             <Item>
@@ -162,6 +186,7 @@ const DetailPresenter = ({ result, error, loading }) =>
       </Content>
     </Container>
   );
+};
 
 DetailPresenter.propTypes = {
   result: PropTypes.object,
